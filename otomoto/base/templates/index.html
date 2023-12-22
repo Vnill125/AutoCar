@@ -10,25 +10,44 @@
 <body>
     <div class='nav-bar'>
         <div class='left'>
-            <h1 class='logo1'>AUTO<h1>
-            <h1 class='logo2'>CAR<h1>
+            <a href={% url "index" %}><h1 class='logo1'>AUTO<h1></a>
+            <h1 class='logo2'><a href={% url "index" %}>CAR</a><h1>
         </div>
         <div class='right'>
-            <p>Login<p>
+            <a href={% url "login" %}><p>Login<p></a>
             <p>|<p>
-            <p>Register<p>
+            <a href={% url "register" %}><p>Register<p></a>
             <button type='submit'>Start selling &#10003;</button>
         </div>
     </div>
+    {% block content %}
     <div class='container'>
         <form method='GET'>
             <div class='container1'>
-                {{ filter.form.brand }}
-                {{ filter.form.model }}
-                {{ filter.form.body }}
-                {{ filter.form.first_registration_year }}
-                {{ filter.form.fuel_type }}
-                {{ filter.form.max_price }}
+                <div class='filter'>
+                    {{filter.form.brand.label}}
+                    {{ filter.form.brand }}
+                </div>
+                <div class='filter'>
+                    {{ filter.form.model.label }}
+                    {{ filter.form.model }}
+                </div>
+                <div class='filter'>
+                    {{ filter.form.body.label }}
+                    {{ filter.form.body }}
+                </div>
+                <div class='filter'>
+                    {{ filter.form.first_registration_year.label }}
+                    {{ filter.form.first_registration_year }}
+                </div>
+                <div class='filter'>
+                    {{ filter.form.fuel_type.label }}
+                    {{ filter.form.fuel_type }}
+                </div>
+                <div class='filter'>
+                    {{ filter.form.max_price.label }}
+                    {{ filter.form.max_price }}
+                </div>
                 <button type='submit'>Search</button>
             </div>
         </form>
@@ -52,6 +71,10 @@
         <div class='car'>
             <div class='left'>
                 <img src="{{ car.car_images.url }}">
+                <div class='imgcount'>
+                    <p><img src={% static "images/camera.png" %}>1/10</p>
+                    
+                </div>
             </div>
             <div class='mid'>
                 <strong class='strong'>{{ car.brand }} {{ car.model }}</strong>
@@ -69,5 +92,6 @@
         </div>
         {% endfor %}
     </div>
+    {% endblock content %}
 </body>
 </html>
