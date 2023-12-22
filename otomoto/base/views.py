@@ -1,6 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate, login as auth_login
+from django.contrib import messages
+
 from .models import Car
 from .filters import CarFilter
+from .forms import RegisterForm
 
 def index(request):
     filter = CarFilter(request.GET, queryset=Car.objects.all())
@@ -37,3 +41,20 @@ def index(request):
 
     return render(request, 'index.html', context={'cars': cars, 'filter': filter, 'order_by': order_by_param})
     
+def login(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        User = authenticate(request, username=username, password=password)
+                
+        if User is not None:
+            auth_login(request, User)
+            return redirect('index')
+        else:
+            messages.error(request,'Wrong password or username! Try again!')
+                
+    return render(request, 'login.html')
+
+def register(request):
+    form = RegisterForm()
+    return render(request, 'register.html', context={'form':form})
