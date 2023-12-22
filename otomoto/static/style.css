@@ -17,6 +17,7 @@ body{
     box-shadow: 0px 1px 20px rgb(207, 206, 206);
 }
 
+
 .left{
     display: flex;
     align-items: center;
@@ -24,15 +25,22 @@ body{
     font-size: 14px;
 }
 
+.left a{
+    text-decoration: none;
+    color: black;
+}
 
 .logo1{
     color: red;
     font-style: italic;
     margin-left: 25px;
+    font-size: 28px;
 }
 
 .logo2{
     font-style: italic;
+    color: black;
+    font-size: 28px;
 }
 
 .right{
@@ -45,6 +53,16 @@ body{
 
 .right p{
     margin: 3px;
+}
+
+.right a{
+    text-decoration: none;
+    color: black;
+    transition: 0.15s;
+}
+
+.right a:hover{
+    color: rgb(255, 0, 0);
 }
 
 .right button{
@@ -78,6 +96,91 @@ body{
     border-bottom-color: rgb(224, 222, 222);
 }
 
+.container .login{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 0px;
+}
+
+.login a{
+    text-decoration: none;
+    color: black;
+    transition: 0.15s;
+}
+
+.login h1{
+    font-size: 40px;
+}
+
+.login p{
+    margin-top: 0px;
+    color: rgb(110, 2, 2);
+    font-weight: bold;
+    font-size: large;
+}
+
+.login a:hover{
+    text-decoration: none;
+    color: rgb(255, 0, 0);
+}
+
+.login_form{
+    align-items: center;
+    display: flex;
+    flex-direction:column;
+    width: 100%;
+
+}
+
+.login_form .error{
+    color: rgb(110, 2, 2);
+}
+
+.login_form .a{
+    margin-top: 25px;
+    text-decoration: none;
+    color: black;
+    transition: 0.15s;
+}
+
+.a:hover{
+    color: rgb(110, 2, 2);
+}
+
+.login_form input{
+    width: 550px;
+    height: 50px;
+    border-width: 1px;
+    border-radius: 5px;
+    border-style: solid;
+    border-color: rgba(0, 0, 0, 0.678);
+    margin-bottom: 10px;
+}
+
+.login_form button{
+    width: 550px;
+    height: 50px;
+    margin-top: 30px;
+    border-style: none;
+    background-color: rgb(110, 2, 2);
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 500;
+    font-size: medium;
+    border-radius: 5px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    padding-left: 35px;
+    padding-right: 35px;
+    cursor: pointer;
+    transition: 0.15s;
+}
+
+.login_form button:hover{
+    opacity: 0.7;
+}
+
 .container1{
     display: flex;
     align-items: center;
@@ -85,8 +188,9 @@ body{
 }
 
 .container1 input{
+    margin-top: 5px;
     margin-bottom: 20px;
-    margin-right: 20px;
+    margin-right: 25px;
     padding-top: 12px;
     padding-bottom: 12px;
     padding-left: 20px;
@@ -96,10 +200,32 @@ body{
     border-radius: 5px;
 }
 
+.container1 select{
+    margin-top: 5px;
+    margin-bottom: 20px;
+    margin-right: 25px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    padding-left: 20px;
+    padding-right: 20px;
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 5px;
+}
+
+
+.container1 .filter{
+    display: flex;
+    flex-direction: column;
+    color: rgb(0, 0, 0);
+    font-weight: 600;
+    font-size: small;
+}
+
+
 .container button{
     width: 180px;
     height: 30px;
-    margin-bottom: 20px;
     border-style: none;
     background-color: rgb(150, 1, 1);
     color: white;
@@ -184,20 +310,50 @@ body{
     margin-bottom: 50px;
 }
 
-.car img{
-    height: 300px;
+.car .left{
+    position: relative;
     width: 500px;
+    height: 300px;
+    margin-top: 25px;
+    margin-bottom: 25px;
+    margin-right: 45px;
+}
+
+.car img{
+    position: relative;
+    height: 100%;
+    width: 100%;
     margin-left: 20px;
     border-radius: 5px;
     border-style: solid;
     border-width: 1px;
     border-color: lightgrey;
-    object-fit: cover;
+    object-fit: cover
 }
 
-.car .left{
-    width: 500px;
-    margin-right: 50px;
+.imgcount{
+    position: absolute;
+    bottom: 5px;
+    right: 15px;
+}
+
+.imgcount img{
+    width: 15px;
+    margin-right: 4px;
+    padding-left: 0px;
+    margin-left: 0px;
+    margin-bottom: 1px;
+}
+
+.imgcount p{
+    display: flex;
+    align-items: center;
+    background-color: rgb(217, 222, 228);
+    color: rgb(0, 0, 0);
+    padding: 4px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
 }
 
 .car .mid{
@@ -296,3 +452,21 @@ body{
     margin-right: 10px;
     color: rgb(0, 0, 0);
 }
+
+.container2{
+    display: flex;
+    width: 1500px;
+    border-top-style: solid;
+    margin-top: 180px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.container2 p{
+    color: rgb(92, 0, 0);
+}
+
+.container2 .p{
+    margin-right: 160px;
+}
+
