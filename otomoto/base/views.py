@@ -1,12 +1,14 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login as auth_login
+from django.contrib.auth import authenticate, login as auth_login, logout
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
 from .models import Car
 from .filters import CarFilter
 from .forms import RegisterForm
 
 def index(request):
+    page = 'index'
     filter = CarFilter(request.GET, queryset=Car.objects.all())
     cars = filter.qs
 
@@ -39,7 +41,7 @@ def index(request):
     cars = cars.order_by(order_by_options.get(order_by_param, '-first_registration_year'))
     
 
-    return render(request, 'index.html', context={'cars': cars, 'filter': filter, 'order_by': order_by_param})
+    return render(request, 'index.html', context={'cars': cars, 'filter': filter, 'order_by': order_by_param, 'page':page})
     
 def login(request):
     if request.method == 'POST':
@@ -49,12 +51,31 @@ def login(request):
                 
         if User is not None:
             auth_login(request, User)
+            messages.success(request, f'Welcome back {username}')
             return redirect('index')
         else:
             messages.error(request,'Wrong password or username! Try again!')
                 
     return render(request, 'login.html')
 
+@login_required
+def logout_user(request):
+    logout(request)
+    return redirect('index')
+
 def register(request):
     form = RegisterForm()
+  
+    if request.method == 'POST':
+        form = RegisterForm(request.POST) 
+        if form.is_valid():
+            user = form.save()
+            user.save()
+            messages.success(request, f'You have singed up successfully. Welcome {user.username}!')
+            auth_login(request, user)
+            return redirect('index')
+        else:
+            messages.error(request, 'Something went wrong! Try again!')
+            return render(request, 'register.html', {'form': form})
+        
     return render(request, 'register.html', context={'form':form})
