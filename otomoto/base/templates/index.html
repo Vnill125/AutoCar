@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <link rel="stylesheet" href={% static 'stylex.css' %}>
+    <script src={% static "js/script.js" %}></script> 
     <title>Car List</title>
 </head>
 <body>
@@ -13,10 +14,26 @@
             <a href={% url "index" %}><h1 class='logo1'>AUTO<h1></a>
             <h1 class='logo2'><a href={% url "index" %}>CAR</a><h1>
         </div>
+        {% if page == 'index' %}
+            {% if messages %}
+            {% for message in messages %}
+            <p>{{message}}</p>
+            {% endfor %}
+            {% endif %}
+            {% else %}
+        {% endif %}
         <div class='right'>
+            {% if user.is_authenticated %}
+            <a href=''><p>My Account<p></a>
+            <p>|<p>
+            <a href=''><p>My Listings<p></a>
+            <p>|<p>
+            <a href={% url "logout" %}><p>Log Out<p></a>
+            {% else %}
             <a href={% url "login" %}><p>Login<p></a>
             <p>|<p>
             <a href={% url "register" %}><p>Register<p></a>
+            {% endif %}
             <button type='submit'>Start selling &#10003;</button>
         </div>
     </div>
