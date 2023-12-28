@@ -2,6 +2,7 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.core.exceptions import ValidationError
 
+
 import pytz
 import datetime
 
@@ -12,19 +13,64 @@ def validate_registration_year(year):
             'Wrong first registration year. Has to be between 1900 and 2024.'
         )
 
-class Car_Brand(models.Model):
-    name = models.CharField(max_length=100, unique=True)
-
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    bio = models.TextField(max_length=500, blank=True)
+    birth_date = models.DateField(null=True, blank=True)
+    contact_number = models.CharField(default=None, max_length=12)
+    
     def __str__(self):
-        return str(self.name)
-
-class Car_Model(models.Model):
-    name = models.CharField(max_length=100, unique=True)
-
-    def __str__(self):
-        return str(self.name)
-
+        return self.user.username
+       
+    
 class Car(models.Model):
+    BRAND = (
+        ('Abarth', 'Abarth'),
+        ('Alfa Romeo', 'Alfa Romeo'),
+        ('Aston Martin', 'Aston Martin'),
+        ('Audi', 'Audi'),
+        ('Bentley', 'Bentley'),
+        ('BMW', 'BMW'),
+        ('Chevrolet', 'Chevrolet'),
+        ('Chrysler', 'Chrysler'),
+        ('Citroen', 'Citroen'),
+        ('Dacia', 'Dacia'),
+        ('Dodge', 'Dodge'),
+        ('Ferrari', 'Ferrari'),
+        ('Fiat', 'Fiat'),
+        ('Ford', 'Ford'),
+        ('GMC', 'GMC'),
+        ('Honda', 'Honda'),
+        ('Hundai', 'Hundai'),
+        ('Infiniti', 'Infiniti'),
+        ('Jaguar', 'Jaguar'),
+        ('Jeep', 'Jeep'),
+        ('Kia', 'Kia'),
+        ('Lamborghini', 'Lamborghini'),
+        ('Land Rover', 'Land Rover'),
+        ('Lexus', 'Lexus'),
+        ('Lancia', 'Lancia'),
+        ('Lotus', 'Lotus'),
+        ('Maserati', 'Maserati'),
+        ('Mazda', 'Mazda'),
+        ('Mercedes-Benz', 'Mercedes-Benz'),
+        ('Mitsubishi', 'Mitsubishi'),
+        ('Nissan', 'Nissan'),
+        ('Opel', 'Opel'),
+        ('Peugeot', 'Peugeot'),
+        ('Porsche', 'Porsche'),
+        ('Renault', 'Renault'),
+        ('Seat', 'Seat'),
+        ('Skoda', 'Skoda'),
+        ('Subaru', 'Subaru'),
+        ('Suzuki', 'Suzuki'),
+        ('Tesla', 'Tesla'),
+        ('Toyota', 'Toyota'),
+        ('Volvo', 'Volvo'),
+        ('Volkswagen', 'Volkswagen'),
+        ('Other', 'Other')
+    )
+    
     BODY_TYPE = (
         ('Compact', 'Compact'),
         ('Convertible', 'Convertible'),
@@ -49,16 +95,22 @@ class Car(models.Model):
         ('Automatic', 'Automatic')
     )
 
-    brand = models.ForeignKey(Car_Brand, on_delete=models.CASCADE)
-    model = models.ForeignKey(Car_Model, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, default=None ,on_delete=models.CASCADE)
+    
+    
+    brand = models.CharField(max_length=100, choices=BRAND)
+    model = models.CharField(max_length=100)
+    
     
     body = models.CharField(max_length=255, null=False, blank=False, choices=BODY_TYPE)
     first_registration_year = models.IntegerField(null=False, blank=False, default=datetime.datetime.today().year, validators=[validate_registration_year])
     horse_power = models.IntegerField(null=False, blank=False, default=None)
+    mileage = models.IntegerField(default=None ,null= False, blank=False)
     transmission = models.CharField(max_length=255, choices=TRANSMISSION_TYPE, default=None)
     fuel_type = models.CharField(max_length=255, null=False, blank=False, default='None', choices=FUEL_TYPE)
     price = models.DecimalField(null=False, blank=False, default='0', max_digits=8, decimal_places=0)
     max_price = models.DecimalField(null=True, blank=True, max_digits=8, decimal_places=0)
+    contact_number = models.CharField(default=None,max_length=12)
     description = models.TextField(null=True, blank=True)
     country = models.CharField(max_length=2, choices=pytz.country_names.items(), default=None)
     city = models.CharField(max_length=255, null=False, blank=False, default=None)
