@@ -34,7 +34,7 @@
             <p>|<p>
             <a href={% url "register" %}><p>Register<p></a>
             {% endif %}
-            <button type='submit'>Start selling &#10003;</button>
+            <a href={% url "new_order" %}><button type='submit'>Start selling &#10003;</button></a>
         </div>
     </div>
     {% block content %}
@@ -85,12 +85,12 @@
         </div>
 
         {% for car in cars %}
+        <a class='acar' href={% url "car" car.id %}>
         <div class='car'>
             <div class='left'>
                 <img src="{{ car.car_images.url }}">
                 <div class='imgcount'>
                     <p><img src={% static "images/camera.png" %}>1/10</p>
-                    
                 </div>
             </div>
             <div class='mid'>
@@ -107,6 +107,7 @@
                 <p>{{ car.country }} ({{ car.city }})</p>
             </div>
         </div>
+        </a>
         {% endfor %}
     </div>
     {% endblock content %}
