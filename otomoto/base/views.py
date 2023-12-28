@@ -5,8 +5,7 @@ from django.contrib.auth.decorators import login_required
 
 from .models import Car
 from .filters import CarFilter
-from .forms import RegisterForm
-
+from .forms import RegisterForm, CarForm
 
 def index(request):
     page = 'index'
@@ -23,9 +22,12 @@ def index(request):
     }
 
     order_by_param = request.GET.get('order_by', '-first_registration_year')
-
-    if 'brand' in filter.data:
-        order_by_param += f'&brand={filter.data["brand"]}'
+    
+    if 'auto' in filter.data:
+        order_by_param += f'&auto={filter.data["auto"]}'
+         
+        if 'brand' in filter.data:
+            order_by_param += f'&brand={filter.data["brand"]}'
         if 'model' in filter.data:
                 order_by_param += f'&model={filter.data["model"]}'
         if 'body' in filter.data:
@@ -40,7 +42,6 @@ def index(request):
     order_by_param = order_by_param.lstrip('&')
             
     cars = cars.order_by(order_by_options.get(order_by_param, '-first_registration_year'))
-    
 
     return render(request, 'index.html', context={'cars': cars, 'filter': filter, 'order_by': order_by_param, 'page':page})
     
@@ -80,3 +81,18 @@ def register(request):
             return render(request, 'register.html', {'form': form})
         
     return render(request, 'register.html', context={'form':form})
+
+def car(request, pk):
+    car = Car.objects.get(id=pk)
+    return render(request, 'car.html', context={'car':car})
+
+def new_order(request):
+    form = CarForm()
+    user = request.user
+    if request.method == 'POST':
+        form = CarForm(request.POST)
+        if form.is_valid():
+            order = form.save(commit=False)
+            order.user = request.user
+            
+    return render(request ,'new_order.html', context={'form':form, 'user':user})
