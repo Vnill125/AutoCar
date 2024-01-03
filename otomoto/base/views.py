@@ -1,11 +1,11 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login as auth_login, logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
 from .models import Car
 from .filters import CarFilter
-from .forms import RegisterForm, CarForm
+from .forms import RegisterForm, CarForm , CarImageFormSet, CarImage
 
 def index(request):
     page = 'index'
@@ -82,17 +82,28 @@ def register(request):
         
     return render(request, 'register.html', context={'form':form})
 
+
 def car(request, pk):
     car = Car.objects.get(id=pk)
-    return render(request, 'car.html', context={'car':car})
+    return render(request, 'car.html', {'car': car})
 
 def new_order(request):
-    form = CarForm()
-    user = request.user
     if request.method == 'POST':
         form = CarForm(request.POST)
-        if form.is_valid():
-            order = form.save(commit=False)
-            order.user = request.user
-            
-    return render(request ,'new_order.html', context={'form':form, 'user':user})
+        formset = CarImageFormSet(request.POST, request.FILES, instance=Car())
+
+        if form.is_valid() and formset.is_valid():
+            car = form.save(commit=False)
+            car.user = request.user
+            car.save()
+            formset.instance = car
+            formset.save()
+            return redirect('car', pk=car.pk)
+    else:
+        form = CarForm()
+        formset = CarImageFormSet(instance=Car())
+
+    return render(request, 'new_order.html', {'form': form, 'formset': formset})
+
+def chat(request):
+    return render(request ,'chat.html')
