@@ -99,7 +99,7 @@ class Car(models.Model):
     
     
     brand = models.CharField(max_length=100, choices=BRAND)
-    model = models.CharField(max_length=100)
+    model = models.CharField(max_length=45)
     
     
     body = models.CharField(max_length=255, null=False, blank=False, choices=BODY_TYPE)
@@ -118,3 +118,7 @@ class Car(models.Model):
 
     def __str__(self):
         return str(self.id)
+    
+class CarImage(models.Model):
+    car = models.ForeignKey(Car, on_delete=models.CASCADE, related_name='images')
+    image = models.ImageField(upload_to='car_images/')
