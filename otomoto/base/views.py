@@ -7,6 +7,7 @@ from .models import Car
 from .filters import CarFilter
 from .forms import RegisterForm, CarForm , CarImageFormSet, CarImage
 
+
 def index(request):
     page = 'index'
     filter = CarFilter(request.GET, queryset=Car.objects.all())
