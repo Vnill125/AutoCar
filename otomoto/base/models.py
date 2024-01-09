@@ -6,7 +6,6 @@ from django.core.exceptions import ValidationError
 import pytz
 import datetime
 
-
 def validate_registration_year(year):
     if year < 1900 or year > 2024:
         raise ValidationError(
