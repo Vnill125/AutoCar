@@ -60,6 +60,7 @@ def login(request):
                 
     return render(request, 'login.html')
 
+
 @login_required
 def logout_user(request):
     logout(request)
