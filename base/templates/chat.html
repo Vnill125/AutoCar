@@ -1,0 +1,38 @@
+{% extends "index.html" %}
+{% load static %}
+{% block content %}
+<div class='container7'>
+    <div class='chat_top'>
+        <a href="{{request.META.HTTP_REFERER}}">&#60; Go back</a>
+    </div>
+
+    <h1>{{chat.title}}</h1>
+
+    <div class='chat' id="chat-messages">
+        {% for message in chat.message_set.all %}
+            <div class="messages">
+                {% if message.sender.username == request.user.username %}
+                <div class='send_messages'>
+                    <p><strong>You:</strong> {{ message.content }}</p>
+                    <small>{{ message.timestamp|date:"F j, Y H:i:s" }}</small>
+                </div>
+                {% else %}
+                <div class='received_messages'>
+                    <p><strong>{{ message.sender.username }}:</strong> {{ message.content }}</p>
+                    <small>{{ message.timestamp|date:"F j, Y H:i:s" }}</small>
+                </div>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+    
+        <form method="post">
+                <div class='replay'>
+                {% csrf_token %}
+                <textarea placeholder='Type a message..' name="content" required></textarea>
+                <button type="submit">Send Message</button>
+            </div>
+        </form>
+
+</div>
+    {% endblock content %}

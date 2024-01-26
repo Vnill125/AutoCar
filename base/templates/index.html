@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href={% static 'style.css' %}>
+    <script src={% static "js/scriptt.js" %}></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> 
+    <title>Car List</title>
+</head>
+<body>
+    <div class='nav-bar'>
+        <div class='left'>
+            <a href={% url "index" %}><h1 class='logo1'>AUTO<h1></a>
+            <h1 class='logo2'><a href={% url "index" %}>CAR</a><h1>
+        </div>
+        {% if page == 'index' %}
+            {% if messages %}
+            {% for message in messages %}
+            <p class='message'>{{message}}</p>
+            {% endfor %}
+            {% endif %}
+            {% else %}
+        {% endif %}
+        <div class='right'>
+            {% if user.is_authenticated %}
+            <a href={% url "my_profile" %}><p>My Account<p></a>
+            <p>|<p>
+            <a href={% url "my_listings" %}><p>My Listings<p></a>
+            <p>|<p>
+            <a href={% url "my_chats" %}><p>My Chats<p></a>
+            <p>|<p>
+            <a href={% url "logout" %}><p>Log Out<p></a>
+            <a href={% url "new_order" %}><button type='submit'>Start selling &#10003;</button></a>
+            {% else %}
+            <a href={% url "login" %}><p>Login<p></a>
+            <p>|<p>
+            <a href={% url "register" %}><p>Register<p></a>
+            <a href={% url "login" %}><button type='submit'>Start selling &#10003;</button></a>
+            {% endif %}
+        </div>
+    </div>
+    {% block content %}
+    <div class='container'>
+        <form method='GET'>
+            <div class='container1'>
+                <div class='filter'>
+                    {{filter.form.brand.label}}
+                    {{ filter.form.brand }}
+                </div>
+                <div class='filter'>
+                    {{ filter.form.model.label }}
+                    {{ filter.form.model }}
+                </div>
+                <div class='filter'>
+                    {{ filter.form.body.label }}
+                    {{ filter.form.body }}
+                </div>
+                <div class='filter'>
+                    {{ filter.form.first_registration_year.label }}
+                    {{ filter.form.first_registration_year }}
+                </div>
+                <div class='filter'>
+                    {{ filter.form.fuel_type.label }}
+                    {{ filter.form.fuel_type }}
+                </div>
+                <div class='filter'>
+                    {{ filter.form.max_price.label }}
+                    {{ filter.form.max_price }}
+                </div>
+                <button type='submit'>Search</button>
+            </div>
+        </form>
+    </div>
+    <div class='main'>
+        <div class='top'>
+            <h1>Cars:</h1>
+            <strong>Cars count: <p>{{ cars.count }}</p></strong>
+        </div>
+        
+        <div class='sort'>
+            <a href="?order_by=1{% if filter.data.brand %}&brand={{ filter.data.brand }}{% endif %}&model={{ filter.data.model }}&body={{ filter.data.body }}&first_registration_year={{ filter.data.first_registration_year }}&fuel_type={{ filter.data.fuel_type }}&max_price={{ filter.data.max_price }}">Lowest price</a>
+            <a href="?order_by=2{% if filter.data.brand %}&brand={{ filter.data.brand }}{% endif %}&model={{ filter.data.model }}&body={{ filter.data.body }}&first_registration_year={{ filter.data.first_registration_year }}&fuel_type={{ filter.data.fuel_type }}&max_price={{ filter.data.max_price }}">Highest price</a>
+            <a href="?order_by=3{% if filter.data.brand %}&brand={{ filter.data.brand }}{% endif %}&model={{ filter.data.model }}&body={{ filter.data.body }}&first_registration_year={{ filter.data.first_registration_year }}&fuel_type={{ filter.data.fuel_type }}&max_price={{ filter.data.max_price }}">Lowest Power</a>
+            <a href="?order_by=4{% if filter.data.brand %}&brand={{ filter.data.brand }}{% endif %}&model={{ filter.data.model }}&body={{ filter.data.body }}&first_registration_year={{ filter.data.first_registration_year }}&fuel_type={{ filter.data.fuel_type }}&max_price={{ filter.data.max_price }}">Highest Power</a>
+            <a href="?order_by=5{% if filter.data.brand %}&brand={{ filter.data.brand }}{% endif %}&model={{ filter.data.model }}&body={{ filter.data.body }}&first_registration_year={{ filter.data.first_registration_year }}&fuel_type={{ filter.data.fuel_type }}&max_price={{ filter.data.max_price }}">Oldest year</a>
+            <a href="?order_by=6{% if filter.data.brand %}&brand={{ filter.data.brand }}{% endif %}&model={{ filter.data.model }}&body={{ filter.data.body }}&first_registration_year={{ filter.data.first_registration_year }}&fuel_type={{ filter.data.fuel_type }}&max_price={{ filter.data.max_price }}">Newest year</a>
+        </div>
+
+        {% for car in cars %}
+        <a class='acar' href={% url "car" car.id %}>
+        <div class='car'>
+            <div class='left'>
+                {% if car.images.all.count == 0 %}
+                    <img src={% static "images/default_car.jpg" %}>
+                {% endif %}
+                {% for image in car.images.all %}
+                {% if forloop.counter == 1 %}
+                    <img src="{{ image.image.url }}">
+                {% endif %}
+                {% endfor %}
+                <div class='imgcount'>
+                    <p><img src={% static "images/camera.png" %}>{{car.images.count}}/10</p>
+                </div>
+            </div>
+            <div class='mid'>
+                <strong class='strong'>{{ car.brand }} {{ car.model }}</strong>
+                <p></p>
+                <p class='p1'><img src='{% static "images/horses.png" %}'><strong class='strong3'>Horse Power:</strong> {{ car.horse_power }} KM</p>
+                <p class='p1'><img src='{% static "images/petrol.png" %}'><strong class='strong3'>Fuel:</strong> {{ car.fuel_type }}</p>
+                <p class='p1'><img src='{% static "images/gear.png" %}'><strong class='strong3'>Transmission:</strong> {{ car.transmission }}</p>
+                <p class='p1'><img src='{% static "images/date.png" %}'><strong class='strong3'>First registration year: </strong> {{ car.first_registration_year }}</p>
+            </div>
+            <div class='right'>
+                <strong>{{ car.price }} $</strong>
+                <strong class='strong2'>Localization:</strong>
+                <p>{{ car.country }} ({{ car.city }})</p>
+            </div>
+        </div>
+        </a>
+        {% endfor %}
+
+        <div class='end_bar'>
+            <p>We are the largest automotive platform in Poland !</p>
+            <p class='p'>Over 1 000 000 users a day !</p>
+            <p>Over 200 000 active offerts !</p>
+        </div>
+
+    </div>
+    {% endblock content %}
+</body>
+</html>
