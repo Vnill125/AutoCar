@@ -1,0 +1,38 @@
+{% extends "index.html" %}
+{% block content %}
+<div class='container'>
+    <div class='login'>
+        <h1><a href={% url "login" %}>Login</a> | <a href={% url "register" %}>Register</a></h1>
+    </div>
+    <div class='login'>
+        <p class='pp3'>Login or Register and list cars for free!</p>
+    </div>
+</div>
+
+<form method='POST'>
+    {% csrf_token %}
+    <div class='login_form'>
+        {% if messages %}
+        {% for message in messages %}
+        <p class='error'>{{message}}</p>
+        {% endfor %}
+        {% endif %}
+        <p>Username</p>
+        <input name='username' type='text' placeholder='Username'>
+        <p>Password</p>
+        <input name='password' type="password" id="myInput" placeholder='Password'>
+        <div class='password'>
+            <p>Show Password</p>
+            <input type="checkbox" onclick="showPassword()">
+        </div>
+        <button type='submit'>Submit</button>
+        <a class='a' href={% url "register" %}><p>Dont have an account? Register now!</p></a>
+    <div>
+</form>
+<div class='end_bar2'>
+    <p>We are the largest automotive platform in Poland !</p>
+    <p class='p'>Over 1 000 000 users a day !</p>
+    <p>Over 200 000 active offerts !</p>
+</div>
+{% endblock content %}
+

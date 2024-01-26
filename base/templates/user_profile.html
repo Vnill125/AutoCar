@@ -1,0 +1,19 @@
+{% extends "index.html" %}
+{% block content %}
+<div class='container'>
+    <h1 class='title'>Welcome to {{user.username}} profile !</h1>
+</div>
+
+<div class='profile'>
+    <p>{{user.username}}</p>
+    <div class='disc'>
+        <p>Birth Date:</p>
+        {{user.profile.birth_date}}
+        <p>Contact Number:</p>
+        {{user.profile.contact_number}}
+        <p>Bio:</p>
+        {{user.profile.bio}}
+    </div>
+</div>
+
+{% endblock content %}

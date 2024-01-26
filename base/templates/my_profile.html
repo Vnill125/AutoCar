@@ -1,0 +1,25 @@
+{% extends "index.html" %}
+{% block content %}
+<div class='container'>
+    <h1 class='title'>My Profile</h1>
+</div>
+<div class='profile'>
+    {% if messages %}
+    {% for message in messages %}
+    <p class='succes'>{{message}}</p>
+    {% endfor %}
+    {% endif %}
+    <p>{{user.username}}</p>
+    <form method='POST'>
+        <div class='disc'>
+        {% csrf_token %}
+        {% for field in form %}
+        <p>{{field.label}}:</p>
+        {{field}}
+        {% endfor %}
+        <button type='submit'>Edit</button>
+        </div>
+    </form>
+</div>
+{% endblock content %}
+

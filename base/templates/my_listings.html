@@ -1,0 +1,11 @@
+{% extends "index.html" %}
+{% block content %}
+<div class='container'>
+    <h1 class='title'>My Listings</h1>
+</div>
+<div class='container8'>
+    {% for car in listings %}
+        <a href={% url "car" pk=car.id %}>{{car.brand}} {{car.model}}</a>
+    {% endfor %}
+</div>
+{% endblock content %}
