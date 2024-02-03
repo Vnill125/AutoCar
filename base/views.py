@@ -22,6 +22,7 @@ def index(request):
         '6': '-first_registration_year',
     }
 
+
     order_by_param = request.GET.get('order_by', '-first_registration_year')
     
     if 'auto' in filter.data:
