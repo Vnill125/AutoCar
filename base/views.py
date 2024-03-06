@@ -26,7 +26,7 @@ def index(request):
     
     if 'auto' in filter.data:
         order_by_param += f'&auto={filter.data["auto"]}'
-         
+    
         if 'brand' in filter.data:
             order_by_param += f'&brand={filter.data["brand"]}'
         if 'model' in filter.data:
